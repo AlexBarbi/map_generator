@@ -339,7 +339,7 @@ class LiveBridge:
     """Keeps the latest robot data from ROS 2 and brings it to the frame of the map on request.
 
     Messages are kept in their own frame, as received, and moved with the latest TF when the page asks
-    (like tare_path_to_opti_pessi_goal.py: planner and controller stamps come from different clocks).
+    (like ranav_mission opti_pessi_goal_bridge: planner and controller stamps come from different clocks).
     OptiPessi publishes in odom, which reaches the map through FAST-LIO's odom -> lio_map.
     """
     STALE = 5.0  # s without a message before a path or mark is no longer shown
