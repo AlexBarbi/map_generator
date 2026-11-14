@@ -9,9 +9,9 @@ map (for SC-PGO's optimized_map.pcd, the frame of the first keyframe). Their z i
 ground height under the click.
 
 The page also overlays a FAR planner graph (.vgh saved by graph_decoder, e.g. warehouse.vgh from
-the TARE exploration): its nodes and its trajectory, obstacle-contour and visibility edges. The
-graph is drawn as saved, so it lines up only if it was built in the frame of the map, as the
-exploration's graph and map are.
+a TARE exploration with far:=true, or from the inspections): its nodes and its trajectory, obstacle-contour and
+visibility edges. The graph is drawn as saved, so it lines up only if it is in the frame of the map, as
+the exploration's graph and map are (the inspections save it converted into that frame).
 
 Live view: when rclpy can be imported (ROS 2 sourced, same ROS_DOMAIN_ID as the robot), the page
 also shows where the robot is (FAST-LIO's lio_base), its trail, the path it is following (FAR's

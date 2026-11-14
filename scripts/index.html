@@ -830,7 +830,7 @@ async function loadGraph(name) {
   requestDraw();
 }
 
-// Lists the .vgh files again (a finished exploration rewrites them) and loads the selected one.
+// Lists the .vgh files again (a finished exploration with far:=true, or an inspection, rewrites them) and loads the selected one.
 async function refreshGraphs(keepSelection) {
   const sel = $("graphFile"), previous = sel.value;
   try {
