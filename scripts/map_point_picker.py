@@ -21,7 +21,7 @@ when fast_lio_localization runs, else camera_init (the exploration, or a FAST-LI
 spawn). --no-live turns it off.
 
 Start inspection (needs the live view): saves the points like Save, then sends their file on
-/start_inspection (std_msgs/String) to far_planner far_inspection_goals.py, which
+/start_inspection (std_msgs/String) to ranav_mission far_inspection_goals.py, which
 far_planner_launch.xml runs and which sends the robot to the points, in order, only then.
 
 Exits (src/exit_inspection): the exits of exit_inspection/exits.yaml next to the map (door, zone in front
@@ -54,6 +54,16 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 FORMATS = (".yaml", ".yml", ".json", ".csv", ".txt")
 NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\-]*$")
 LOCAL_HOSTS = ("localhost", "127.0.0.1", "::1")
+
+
+def package_save_data():
+    """save_data/ of this package: next to scripts/ in the source folder, share/map_generator/save_data (a link to
+    it) when installed."""
+    for d in (os.path.join(SCRIPT_DIR, "..", "save_data"),
+              os.path.join(SCRIPT_DIR, "..", "..", "share", "map_generator", "save_data")):
+        if os.path.isdir(d):
+            return os.path.normpath(d)
+    return "save_data"
 
 
 # ---------------------------------------------------------------- PCD reading
@@ -639,8 +649,8 @@ def make_handler(state):
 
 def main():
     parser = argparse.ArgumentParser(description="Top-down web viewer of a PCD map to pick points and save them to a file.")
-    parser.add_argument("pcd", nargs="?", default="save_data/optimized_map.pcd",
-                        help="map to show (default: save_data/optimized_map.pcd)")
+    parser.add_argument("pcd", nargs="?", default=os.path.join(package_save_data(), "optimized_map.pcd"),
+                        help="map to show (default: optimized_map.pcd in save_data/ of map_generator)")
     parser.add_argument("--output", default="selected_points.yaml",
                         help="points file; a relative path is next to the map. The extension picks the format: "
                              ".yaml/.yml, .json, .csv or .txt (default: selected_points.yaml). The page can save "

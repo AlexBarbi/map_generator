@@ -1,6 +1,6 @@
 """The Start inspection button of the page: /api/inspection saves the points and tells far_inspection_goals.py to go.
 
-    python3 -m pytest test/      (in src/MAP_GENERATOR; ROS 2 sourced, for the live tests)
+    python3 -m pytest test/      (in src/map_generator; ROS 2 sourced, for the live tests)
 """
 import json
 import os

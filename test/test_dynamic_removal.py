@@ -2,7 +2,7 @@
 column, 96 rings over a 0-90 deg dome, tilted 5 deg forward) from keyframes 1 m apart; a person stands in front of the
 first two keyframes only, then is gone; the keyframes go along the room and come back.
 
-Run: python3 -m pytest test/   (in src/MAP_GENERATOR; numpy and scipy)
+Run: python3 -m pytest test/   (in src/map_generator; numpy and scipy)
 """
 import numpy as np
 

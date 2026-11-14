@@ -3,7 +3,7 @@
 
     make_merged_map.py [save_directory] [--output optimized_map.pcd] [--no-vis]
 
-save_directory is SC-PGO's: Scans/*.pcd (keyframe scans, lidar frame) and optimized_poses.txt (one KITTI-format pose
+save_directory (default: save_data/ of this package) is SC-PGO's: Scans/*.pcd (keyframe scans, lidar frame) and optimized_poses.txt (one KITTI-format pose
 per keyframe, falling back to odom_poses.txt). Every keyframe is used. By default the points of things that moved
 (people, carts) are left out: a point is dropped when other keyframes saw through where it was (dynamic_removal.py).
 Needs numpy, scipy and open3d.
@@ -17,16 +17,27 @@ import sys
 import numpy as np
 import open3d as o3d  # intensity is read/written through the o3d.t (tensor) API
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, script_dir)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, SCRIPT_DIR)
 import dynamic_removal  # noqa: E402
 
-color_table = np.load(os.path.join(script_dir, "jet_table.npy"))
+color_table = np.load(os.path.join(SCRIPT_DIR, "jet_table.npy"))
 intensity_color_max = 200
 
+
+def package_save_data():
+    """save_data/ of this package: next to scripts/ in the source folder, share/map_generator/save_data (a link to
+    it) when installed."""
+    for d in (os.path.join(SCRIPT_DIR, "..", "save_data"),
+              os.path.join(SCRIPT_DIR, "..", "..", "share", "map_generator", "save_data")):
+        if os.path.isdir(d):
+            return os.path.normpath(d)
+    return "save_data"
+
+
 parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-parser.add_argument("data_dir", nargs="?", default="save_data",
-                    help="SC-PGO save_directory, holding Scans/ and *_poses.txt (default: ./save_data)")
+parser.add_argument("data_dir", nargs="?", default=package_save_data(),
+                    help="SC-PGO save_directory, holding Scans/ and *_poses.txt (default: save_data/ of map_generator)")
 parser.add_argument("--near", type=float, default=0.7,
                     help="drop points closer than this to the lidar, in m; 0 keeps them all (default: 0.7). "
                          "The original 2 m was meant for the car of the SC-PGO datasets and drops most of an indoor scan.")

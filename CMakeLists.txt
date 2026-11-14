@@ -16,4 +16,14 @@ install(FILES
   scripts/jet_table.npy
   DESTINATION lib/${PROJECT_NAME})
 
+# save_data/ (SC-PGO's save_directory, the maps, the graphs) stays in the source folder, so a rebuild never touches
+# it; share/map_generator/save_data links to it, so launch files find it as $(find-pkg-share map_generator)/save_data
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/save_data)
+install(CODE "
+  file(MAKE_DIRECTORY \"\${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}\")
+  file(REMOVE \"\${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/save_data\")
+  file(CREATE_LINK \"${CMAKE_CURRENT_SOURCE_DIR}/save_data\"
+       \"\${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/save_data\" SYMBOLIC)
+")
+
 ament_package()
